@@ -1,10 +1,11 @@
 import re
 import requests
 
-# Each source with its category name
+# Each source with its category name (order here = order in TiviMate)
 SOURCES = [
     ("Malayalam", "https://iptv-org.github.io/iptv/languages/mal.m3u"),
     ("Tamil",     "https://iptv-org.github.io/iptv/languages/tam.m3u"),
+    ("Romaxa55",  "https://romaxa55.github.io/world_ip_tv/output/index.m3u"),
 ]
 
 OUTPUT_FILE = "merged_playlist.m3u"
