@@ -1,0 +1,34 @@
+name: Update Merged IPTV Playlist
+
+on:
+  schedule:
+    - cron: '0 0 * * *'   # Runs every day at 00:00 UTC
+  workflow_dispatch:        # Lets you run it manually from the Actions tab
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Run merge script
+        run: python merge_playlists.py
+
+      - name: Commit and push the updated playlist
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add merged_playlist.m3u
+          git commit -m "Auto-update merged playlist" || exit 0
+          git push
