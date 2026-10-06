@@ -5,12 +5,16 @@ import requests
 SOURCES = [
     ("Malayalam", "https://iptv-org.github.io/iptv/languages/mal.m3u", True),
     ("Tamil",     "https://iptv-org.github.io/iptv/languages/tam.m3u", True),
+    ("Doms9",     "https://s.id/d9M3U8",                                True),
     ("romaxa55",  "https://romaxa55.github.io/world_ip_tv/output/index.m3u", False),
 ]
 
 OUTPUT_FILE = "merged_playlist.m3u"
 
-# Order of groups after Malayalam and Tamil.
+# Groups that always stay at the very top, in this order
+TOP_GROUPS = ["Malayalam", "Tamil", "Doms9"]
+
+# Order of groups after the top ones.
 # These must match the group-title values in the source exactly.
 PRIORITY_GROUPS = [
     "India",
@@ -28,9 +32,6 @@ PRIORITY_GROUPS = [
     "South Korea",
     "Guam",
 ]
-
-# Groups that always stay at the very top
-TOP_GROUPS = ["Malayalam", "Tamil"]
 
 def set_group_title(extinf_line, category):
     """Replace or insert group-title in an #EXTINF line."""
@@ -54,7 +55,7 @@ def merge_playlists():
     for category, url, flatten in SOURCES:
         print(f"Downloading {url} (flatten={flatten})...")
         try:
-            response = requests.get(url, timeout=60)
+            response = requests.get(url, timeout=60, allow_redirects=True)
             response.raise_for_status()
 
             current_block = []
