@@ -2,8 +2,8 @@ name: Update Merged IPTV Playlist
 
 on:
   schedule:
-    - cron: '0 0 * * *'   # Runs every day at 00:00 UTC
-  workflow_dispatch:        # Lets you run it manually from the Actions tab
+    - cron: '0 */6 * * *'   # Runs every 6 hours
+  workflow_dispatch:         # Lets you run it manually from the Actions tab
 
 jobs:
   build:
